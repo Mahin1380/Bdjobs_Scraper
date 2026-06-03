@@ -6,7 +6,7 @@ from tqdm.auto import tqdm
 
 base_url = "https://api.bdjobs.com/Jobs/api/JobSearch/GetJobSearch"
 
-job_title = "financial analyst"   # change this to your desired job title, e.g. "Data Analyst", "Software Engineer", etc.
+job_title = ''   # change this to your desired job title, e.g. "Data Analyst", "Software Engineer", etc.
 
 params = {
     "Icat": "",
@@ -110,7 +110,7 @@ for page in tqdm(range(1, total_pages + 1), desc="Fetching pages", unit="page", 
 # Step 3: Clean & save
 # ────────────────────────────────────────────────
 if all_jobs:
-    df = pd.DataFrame(all_jobs)
+    df = pd.json_normalize(all_jobs)
     print(f"\nRaw jobs collected: {len(df)}")
 
     df = clean_jobs(df)
@@ -122,7 +122,3 @@ if all_jobs:
     print("Columns:", ", ".join(df.columns[:8]), "...")
 else:
     print("No jobs collected.")
-
-# Optional: quick stats
-print("\nQuick check:")
-print(df["companyName"].value_counts().head(8))
